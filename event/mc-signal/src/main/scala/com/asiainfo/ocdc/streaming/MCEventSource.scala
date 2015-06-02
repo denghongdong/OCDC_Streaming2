@@ -58,7 +58,7 @@ class MCEventSource() extends EventSource() {
     }
   }
 
-  override def transform(source: String): Option[MCSourceObject] = {
+  /*override def transform(source: String): Option[MCSourceObject] = {
     val inputArray = source.split(conf.get("delim"))
     if (inputArray.length != conf.getInt("formatlength")) {
       logError(" Source format is wrong ! ")
@@ -67,6 +67,16 @@ class MCEventSource() extends EventSource() {
     } else {
       formatSource(inputArray)
     }
+  }*/
+
+  override def transform(source: String): Option[(String, MCSourceObject)] = {
+    var obj: Option[(String, MCSourceObject)] = None
+    val inputArray = source.split(conf.get("delim"))
+    if (inputArray.length == conf.getInt("formatlength")) {
+      val mcobj = formatSource(inputArray)
+      if (mcobj != None) obj = Some((mcobj.get.generateId, mcobj.get))
+    }
+    obj
   }
 
   override def transformDF(sqlContext: SQLContext, labeledRDD: RDD[SourceObject]): DataFrame = {

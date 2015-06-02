@@ -8,6 +8,7 @@ INSERT INTO `MainFrameProp` (`name`,`pvalue`) VALUES ("JedisMaxTotal","1000");
 INSERT INTO `MainFrameProp` (`name`,`pvalue`) VALUES ("JedisMEM","600000");
 INSERT INTO `MainFrameProp` (`name`,`pvalue`) VALUES ("internal","4");
 INSERT INTO `MainFrameProp` (`name`,`pvalue`) VALUES ("JedisTimeOut",10000);
+INSERT INTO `MainFrameProp` (`name`,`pvalue`) VALUES ("cache_update_interval",30 * 60 * 1000);
 
 
 -- init EventSources

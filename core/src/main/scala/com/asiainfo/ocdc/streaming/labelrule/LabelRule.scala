@@ -14,5 +14,5 @@ trait LabelRule extends Serializable {
     conf = lrconf
   }
 
-  def attachLabel(source: SourceObject, cache: StreamingCache): StreamingCache
+  def attachLabel(sources: Seq[SourceObject], cache: StreamingCache): StreamingCache
 }

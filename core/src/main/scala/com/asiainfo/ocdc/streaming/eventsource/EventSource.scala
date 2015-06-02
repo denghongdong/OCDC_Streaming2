@@ -4,14 +4,13 @@ import com.asiainfo.ocdc.streaming._
 import com.asiainfo.ocdc.streaming.eventrule.{EventRule, StreamingCache}
 import com.asiainfo.ocdc.streaming.labelrule.LabelRule
 import com.asiainfo.ocdc.streaming.subscribe.BusinessEvent
-import com.asiainfo.ocdc.streaming.tool.CacheFactory
 import org.apache.spark.rdd.RDD
 import org.apache.spark.sql.{DataFrame, SQLContext}
 import org.apache.spark.streaming.StreamingContext
 import org.apache.spark.streaming.dstream.DStream
 
-import scala.collection.{immutable, mutable}
 import scala.collection.mutable.{ArrayBuffer, Map}
+import scala.collection.{immutable, mutable}
 
 abstract class EventSource() extends Serializable with org.apache.spark.Logging {
   var id: String = null
@@ -44,11 +43,12 @@ abstract class EventSource() extends Serializable with org.apache.spark.Logging 
     EventSourceReader.readSource(ssc, conf)
   }
 
-  def transform(source: String): Option[SourceObject]
+  //  def transform(source: String): Option[SourceObject]
+  def transform(source: String): Option[(String, SourceObject)]
 
   def transformDF(sqlContext: SQLContext, labeledRDD: RDD[SourceObject]): DataFrame
 
-  final def process(ssc: StreamingContext) = {
+  /*final def process(ssc: StreamingContext) = {
     val sqlContext = new SQLContext(ssc.sparkContext)
     val inputStream = readSource(ssc)
     inputStream.foreachRDD { rdd =>
@@ -68,6 +68,55 @@ abstract class EventSource() extends Serializable with org.apache.spark.Logging 
           subscribeEvents(eventMap)
 
         }
+      }
+    }
+  }*/
+
+  final def process(ssc: StreamingContext) = {
+    val sqlContext = new SQLContext(ssc.sparkContext)
+    val inputStream = readSource(ssc)
+
+    val updateFunc = (values: Seq[SourceObject], state: Option[(SourceObject, immutable.Map[String, StreamingCache])]) => {
+      val labelRuleArray = labelRules.toArray
+
+      var rule_caches = state match {
+        case Some(v) => v._2
+        case None => {
+          val cachemap = mutable.Map[String, StreamingCache]()
+          labelRuleArray.foreach(labelRule => {
+            cachemap += (labelRule.conf.get("id") -> null)
+          })
+          cachemap.toMap
+        }
+      }
+
+      if (values.isEmpty) {
+        Some((null, rule_caches))
+      } else {
+        labelRuleArray.foreach(labelRule => {
+          logDebug(" Exec label : " + labelRule.conf.getClassName())
+          val cacheOpt = rule_caches.get(labelRule.conf.get("id"))
+          var old_cache: StreamingCache = null
+          if (cacheOpt != None) old_cache = cacheOpt.get
+
+          val newcache = labelRule.attachLabel(values, old_cache)
+          rule_caches = rule_caches.updated(labelRule.conf.get("id"), newcache)
+        })
+
+        Some((values.last, rule_caches))
+      }
+    }
+
+    var updateStateStream: DStream[(String, (SourceObject, immutable.Map[String, StreamingCache]))] = null
+    if (shuffleNum > 0) inputStream.map(transform).filter(_ != None).map(_.get).updateStateByKey(updateFunc, shuffleNum)
+    else updateStateStream = inputStream.map(transform).filter(_ != None).map(_.get).updateStateByKey(updateFunc)
+
+    updateStateStream.map(_._2._1).filter(_ != null).foreachRDD { rdd =>
+      if (rdd.partitions.length > 0) {
+        val eventMap = makeEvents(sqlContext, rdd)
+
+        subscribeEvents(eventMap)
+
       }
     }
   }
@@ -118,102 +167,5 @@ abstract class EventSource() extends Serializable with org.apache.spark.Logging 
     eventMap
   }
 
-  def execLabelRule(sourceRDD: RDD[SourceObject]) = {
-    println(" Begin exec labes : " + System.currentTimeMillis())
-
-    val labelRuleArray = labelRules.toArray
-
-    sourceRDD.mapPartitions(iter => {
-      new Iterator[SourceObject] {
-        private[this] var currentRow: SourceObject = _
-        private[this] var currentPos: Int = -1
-        private[this] var arrayBuffer: Array[SourceObject] = _
-
-        override def hasNext: Boolean = {
-          val flag = (currentPos != -1 && currentPos < arrayBuffer.length) || (iter.hasNext && fetchNext())
-          flag
-        }
-
-        override def next(): SourceObject = {
-          currentPos += 1
-          arrayBuffer(currentPos - 1)
-        }
-
-        private final def fetchNext(): Boolean = {
-          val currentArrayBuffer = new ArrayBuffer[SourceObject]
-          currentPos = -1
-          var totalFetch = 0
-          var result = false
-
-          val minimap = mutable.Map[String, SourceObject]()
-
-          while (iter.hasNext && totalFetch < conf.getInt("batchsize")) {
-            val currentLine = iter.next()
-            minimap += ("Label:" + currentLine.generateId -> currentLine)
-            totalFetch += 1
-            currentPos = 0
-            result = true
-          }
-
-          val f1 = System.currentTimeMillis()
-//          val cachemap_old = CacheFactory.getManager.getMultiCacheByKeys(minimap.keys.toList)
-          val cachemap_old = CacheFactory.getManager.getByteCacheString(minimap.keys.head)
-          logDebug(" GET codis cache cost time : " + (System.currentTimeMillis() - f1) + " millis ! ")
-
-          val cachemap_new = minimap.map(x => {
-            val key = x._1
-            val value = x._2
-
-            /*var rule_caches = cachemap_old.get(key).get match {
-              case cache: immutable.Map[String, StreamingCache] => cache
-              case null => {
-                val cachemap = mutable.Map[String, StreamingCache]()
-                labelRuleArray.foreach(labelRule => {
-                  cachemap += (labelRule.conf.get("id") -> null)
-                })
-
-                cachemap.toMap
-              }
-            }*/
-
-            var rule_caches = cachemap_old match {
-              case cache: immutable.Map[String, StreamingCache] => cache
-              case null => {
-                val cachemap = mutable.Map[String, StreamingCache]()
-                labelRuleArray.foreach(labelRule => {
-                  cachemap += (labelRule.conf.get("id") -> null)
-                })
-
-                cachemap.toMap
-              }
-            }
-
-            val f2 = System.currentTimeMillis()
-            labelRuleArray.foreach(labelRule => {
-              logDebug(" Exec label : " + labelRule.conf.getClassName())
-              val cacheOpt = rule_caches.get(labelRule.conf.get("id"))
-              var old_cache: StreamingCache = null
-              if (cacheOpt != None) old_cache = cacheOpt.get
-
-              val newcache = labelRule.attachLabel(value, old_cache)
-              rule_caches = rule_caches.updated(labelRule.conf.get("id"), newcache)
-            })
-            currentArrayBuffer.append(value)
-            logDebug(" Exec labels cost time : " + (System.currentTimeMillis() - f2) + " millis ! ")
-            (key -> rule_caches.asInstanceOf[Any])
-          })
-
-          //update caches to CacheManager
-          val f3 = System.currentTimeMillis()
-//          CacheFactory.getManager.setMultiCache(cachemap_new)
-          CacheFactory.getManager.setByteCacheString(cachemap_new.head._1,cachemap_new.head._2)
-          logDebug(" Update codis cache cost time : " + (System.currentTimeMillis() - f3) + " millis ! ")
-
-          arrayBuffer = currentArrayBuffer.toArray
-          result
-        }
-      }
-    })
-  }
 }
 
