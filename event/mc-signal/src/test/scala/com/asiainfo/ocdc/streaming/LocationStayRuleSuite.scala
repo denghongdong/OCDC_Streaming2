@@ -75,20 +75,20 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
 
     areaLabelMap.put("area1", "true")
     mc1.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc1, cache)
+    rule.attachMCLabel(Seq(mc1), cache)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
     areaLabelMap.put("area2", "true")
     mc2.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc2, cache)
+    rule.attachMCLabel(Seq(mc2), cache)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).size == 2)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 0 + "")
 
     areaLabelMap.put("area3", "true")
     mc3.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc3, cache)
+    rule.attachMCLabel(Seq(mc3), cache)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).size == 3)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 0 + "")
@@ -106,32 +106,32 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
     //首次
     areaLabelMap.put("area1", "true")
     mc1.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc1, cache)
+    rule.attachMCLabel(Seq(mc1), cache)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
     //没有达到时间
     mc2.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc2, cache)
+    rule.attachMCLabel(Seq(mc2), cache)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
     //达到时间
     mc3.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc3, cache)
+    rule.attachMCLabel(Seq(mc3), cache)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
 
     //长时间停留在一个地方，超过了一定时间
     mc4.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc4, cache)
+    rule.attachMCLabel(Seq(mc4), cache)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).size == 1)
     //TODO: 确认已超过指定时长后，是否不再打标签
     //		assert(mc4.getLabels(Constant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
     mc5.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc5, cache)
+    rule.attachMCLabel(Seq(mc5), cache)
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).size == 1)
     //TODO: 确认已超过指定时长后，是否不再打标签
     //		assert(mc5.getLabels(Constant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
@@ -150,7 +150,7 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
     //首次到区域area1
     areaLabelMap.put("area1", "true")
     mc1.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc1, cache)
+    rule.attachMCLabel(Seq(mc1), cache)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
@@ -158,7 +158,7 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
     areaLabelMap.remove("area1")
     areaLabelMap.put("area2", "true")
     mc2.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc2, cache)
+    rule.attachMCLabel(Seq(mc2), cache)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 0 + "")
 
@@ -166,7 +166,7 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
     areaLabelMap.remove("area2")
     areaLabelMap.put("area3", "true")
     mc3.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc3, cache)
+    rule.attachMCLabel(Seq(mc3), cache)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).get("area3").get == 0 + "")
 
@@ -174,13 +174,13 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
     areaLabelMap.remove("area3")
     areaLabelMap.put("area1", "true")
     mc4.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc4, cache)
+    rule.attachMCLabel(Seq(mc4), cache)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
     //待在区域area1，达到时长
     mc5.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc5, cache)
+    rule.attachMCLabel(Seq(mc5), cache)
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
   }
@@ -198,7 +198,7 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
     //首次到区域area1
     areaLabelMap.put("area1", "true")
     mc1.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc1, cache)
+    rule.attachMCLabel(Seq(mc1), cache)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
@@ -206,7 +206,7 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
     areaLabelMap.remove("area1")
     areaLabelMap.put("area2", "true")
     mc2.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc2, cache)
+    rule.attachMCLabel(Seq(mc2), cache)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 0 + "")
 
@@ -214,7 +214,7 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
     areaLabelMap.remove("area2")
     areaLabelMap.put("area3", "true")
     mc3.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc3, cache)
+    rule.attachMCLabel(Seq(mc3), cache)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).get("area3").get == 0 + "")
 
@@ -222,7 +222,7 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
     areaLabelMap.remove("area3")
     areaLabelMap.put("area1", "true")
     mc4.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc4, cache)
+    rule.attachMCLabel(Seq(mc4), cache)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).size == 1)
     //TODO: 确认是否需要更精确的判断
     //		assert(mc4.getLabels(Constant.LABEL_STAY).get("area1").get == 0 + "")
@@ -230,7 +230,7 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
 
     //待在区域area1，达到时长
     mc5.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc5, cache)
+    rule.attachMCLabel(Seq(mc5), cache)
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).size == 1)
     //TODO: 已满足时长条件，确认是否继续打标签
     //		assert(mc5.getLabels(Constant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
@@ -238,7 +238,7 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
 
 
     mc6.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc6, cache)
+    rule.attachMCLabel(Seq(mc6), cache)
     assert(mc6.getLabels(LabelConstant.LABEL_STAY).size == 1)
     //TODO: 已满足时长条件，确认是否继续打标签
     //		assert(mc6.getLabels(Constant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
@@ -257,19 +257,19 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
 
     areaLabelMap.put("area1", "true")
     mc1.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc1, cache)
+    rule.attachMCLabel(Seq(mc1), cache)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
     areaLabelMap.put("area2", "true")
     mc2.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc2, cache)
+    rule.attachMCLabel(Seq(mc2), cache)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).size == 2)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 0 + "")
 
     mc3.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc3, cache)
+    rule.attachMCLabel(Seq(mc3), cache)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).size == 2)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 0 + "")
@@ -277,20 +277,20 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
     areaLabelMap.remove("area1")
     areaLabelMap.put("area3", "true")
     mc4.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc4, cache)
+    rule.attachMCLabel(Seq(mc4), cache)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).size == 2)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 20 * 60 * 1000 + "")
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).get("area3").get == 0 + "")
 
     mc5.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc5, cache)
+    rule.attachMCLabel(Seq(mc5), cache)
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).size == 2)
     //TODO: 在 area2 连续停留超过20分钟，这次都打标签，和 test3 不一样
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 20 * 60 * 1000 + "")
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).get("area3").get == 20 * 60 * 1000 + "")
 
     mc6.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc6, cache)
+    rule.attachMCLabel(Seq(mc6), cache)
     assert(mc6.getLabels(LabelConstant.LABEL_STAY).size == 2)
     //TODO: 在 area2 连续停留超过20分钟，这次不打标签，和 上一次处理不一样； 在 area3连续停留超过20分钟，这次打标签
     //		assert(mc6.getLabels(Constant.LABEL_STAY).get("area2").get == 20 * 60 * 1000 + "")
@@ -298,7 +298,7 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
     assert(mc6.getLabels(LabelConstant.LABEL_STAY).get("area3").get == 20 * 60 * 1000 + "")
 
     mc7.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc7, cache)
+    rule.attachMCLabel(Seq(mc7), cache)
     assert(mc7.getLabels(LabelConstant.LABEL_STAY).size == 2)
     //TODO: 在 area2 连续停留超过20分钟，这次不打标签； 在 area3连续停留超过20分钟，这次打标签
     //				assert(mc7.getLabels(Constant.LABEL_STAY).get("area2").get == 20 * 60 * 1000 + "")
@@ -320,19 +320,19 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
 
     areaLabelMap.put("area1", "true")
     mc1.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc1, cache)
+    rule.attachMCLabel(Seq(mc1), cache)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
     areaLabelMap.put("area2", "true")
     mc2.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc2, cache)
+    rule.attachMCLabel(Seq(mc2), cache)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).size == 2)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 0 + "")
 
     mc3.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc3, cache)
+    rule.attachMCLabel(Seq(mc3), cache)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).size == 2)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 20 * 60 * 1000 + "")
@@ -340,28 +340,28 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
     areaLabelMap.remove("area1")
     areaLabelMap.put("area3", "true")
     mc4.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc4, cache)
+    rule.attachMCLabel(Seq(mc4), cache)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).size == 2)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 20 * 60 * 1000 + "")
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).get("area3").get == 0 + "")
 
     areaLabelMap.put("area1", "true")
     mc5.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc5, cache)
+    rule.attachMCLabel(Seq(mc5), cache)
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).size == 3)
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 0 + "")
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).get("area3").get == 20 * 60 * 1000 + "")
 
     mc6.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc6, cache)
+    rule.attachMCLabel(Seq(mc6), cache)
     assert(mc6.getLabels(LabelConstant.LABEL_STAY).size == 3)
     assert(mc6.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
     assert(mc6.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 0 + "")
     assert(mc6.getLabels(LabelConstant.LABEL_STAY).get("area3").get == 0 + "")
 
     mc7.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc7, cache)
+    rule.attachMCLabel(Seq(mc7), cache)
     assert(mc7.getLabels(LabelConstant.LABEL_STAY).size == 3)
     assert(mc7.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
     assert(mc7.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 0 + "")
@@ -379,22 +379,22 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
 
     areaLabelMap.put("area1", "true")
     mc1.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc1, cache)
+    rule.attachMCLabel(Seq(mc1), cache)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
     mc2.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc2, cache)
+    rule.attachMCLabel(Seq(mc2), cache)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
     mc3.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc3, cache)
+    rule.attachMCLabel(Seq(mc3), cache)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
     mc4.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc4, cache)
+    rule.attachMCLabel(Seq(mc4), cache)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
 
@@ -410,22 +410,22 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
 
     areaLabelMap.put("area1", "true")
     mc1.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc1, cache)
+    rule.attachMCLabel(Seq(mc1), cache)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
     mc2.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc2, cache)
+    rule.attachMCLabel(Seq(mc2), cache)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
     mc3.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc3, cache)
+    rule.attachMCLabel(Seq(mc3), cache)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
 
     mc4.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc4, cache)
+    rule.attachMCLabel(Seq(mc4), cache)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).size == 1)
     //TODO: 连续满足时长条件，确认是否继续打标签
     //		assert(mc4.getLabels(Constant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
@@ -445,28 +445,28 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
 
     areaLabelMap.put("area1", "true")
     mc1.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc1, cache)
+    rule.attachMCLabel(Seq(mc1), cache)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
     mc2.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc2, cache)
+    rule.attachMCLabel(Seq(mc2), cache)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
     //超过一定时长（30分钟），忽略
     mc3.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc3, cache)
+    rule.attachMCLabel(Seq(mc3), cache)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
     mc4.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc4, cache)
+    rule.attachMCLabel(Seq(mc4), cache)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
     mc5.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc5, cache)
+    rule.attachMCLabel(Seq(mc5), cache)
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
 
@@ -482,27 +482,27 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
 
     areaLabelMap.put("area1", "true")
     mc1.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc1, cache)
+    rule.attachMCLabel(Seq(mc1), cache)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
     areaLabelMap.put("area2", "true")
     mc2.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc2, cache)
+    rule.attachMCLabel(Seq(mc2), cache)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).size == 2)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 0 + "")
 
     areaLabelMap.put("area3", "true")
     mc3.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc3, cache)
+    rule.attachMCLabel(Seq(mc3), cache)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).size == 3)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 0 + "")
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).get("area3").get == 0 + "")
 
     mc4.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc4, cache)
+    rule.attachMCLabel(Seq(mc4), cache)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).size == 3)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
     //TODO: 是否需要需要更精确的判断，
@@ -510,7 +510,7 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).get("area3").get == 0 + "")
 
     mc5.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc5, cache)
+    rule.attachMCLabel(Seq(mc5), cache)
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).size == 3)
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 20 * 60 * 1000 + "") //业务逻辑暂定
@@ -528,20 +528,20 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
 
     areaLabelMap.put("area1", "true")
     mc1.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc1, cache)
+    rule.attachMCLabel(Seq(mc1), cache)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
     areaLabelMap.put("area2", "true")
     mc2.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc2, cache)
+    rule.attachMCLabel(Seq(mc2), cache)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).size == 2)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 0 + "")
 
     areaLabelMap.put("area3", "true")
     mc3.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc3, cache)
+    rule.attachMCLabel(Seq(mc3), cache)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).size == 3)
     //		assert(mc3.getLabels(Constant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
@@ -550,7 +550,7 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).get("area3").get == 0 + "")
 
     mc4.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc4, cache)
+    rule.attachMCLabel(Seq(mc4), cache)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).size == 3)
     //		assert(mc4.getLabels(Constant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
@@ -559,7 +559,7 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).get("area3").get == 0 + "")
 
     mc5.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc5, cache)
+    rule.attachMCLabel(Seq(mc5), cache)
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).size == 3)
     //		assert(mc4.getLabels(Constant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
@@ -578,27 +578,27 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
 
     areaLabelMap.put("area1", "true")
     mc1.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc1, cache)
+    rule.attachMCLabel(Seq(mc1), cache)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
     areaLabelMap.put("area1", "true")
     areaLabelMap.put("area2", "true")
     mc2.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc2, cache)
+    rule.attachMCLabel(Seq(mc2), cache)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).size == 2)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 0 + "")
 
     mc3.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc3, cache)
+    rule.attachMCLabel(Seq(mc3), cache)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).size == 2)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 0 + "") //如果一条记录无效，记录所在区域停留时间为0，不更新cache
 
     areaLabelMap.put("area3", "true")
     mc4.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc4, cache)
+    rule.attachMCLabel(Seq(mc4), cache)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).size == 3)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 20 * 60 * 1000 + "")
@@ -616,7 +616,7 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
 
     areaLabelMap.put("area1", "true")
     mc1.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc1, cache)
+    rule.attachMCLabel(Seq(mc1), cache)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
@@ -624,7 +624,7 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
     areaLabelMap.put("area2", "true")
     areaLabelMap.put("area3", "true")
     mc2.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc2, cache)
+    rule.attachMCLabel(Seq(mc2), cache)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).size == 2)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 0 + "")
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area3").get == 0 + "")
@@ -633,18 +633,18 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
     areaLabelMap.remove("area3")
     areaLabelMap.put("area1", "true")
     mc3.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc3, cache)
+    rule.attachMCLabel(Seq(mc3), cache)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
 
     mc4.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc4, cache)
+    rule.attachMCLabel(Seq(mc4), cache)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
 
     areaLabelMap.put("area2", "true")
     mc5.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc5, cache)
+    rule.attachMCLabel(Seq(mc5), cache)
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).size == 2)
     //TODO: 连续满足时长条件，确认是否继续打标签
     //		assert(mc5.getLabels(Constant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
@@ -656,7 +656,7 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
     areaLabelMap.remove("area2")
     areaLabelMap.put("area3", "true")
     mc6.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc6, cache)
+    rule.attachMCLabel(Seq(mc6), cache)
     assert(mc6.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc6.getLabels(LabelConstant.LABEL_STAY).get("area3").get == 0 + "")
 
@@ -677,43 +677,43 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
 
     areaLabelMap.put("area1", "true")
     mc1.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc1, cache)
+    rule.attachMCLabel(Seq(mc1), cache)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
     mc2.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc2, cache)
+    rule.attachMCLabel(Seq(mc2), cache)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
     mc3.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc3, cache)
+    rule.attachMCLabel(Seq(mc3), cache)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 5 * 60 * 1000 + "")
 
     mc4.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc4, cache)
+    rule.attachMCLabel(Seq(mc4), cache)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 5 * 60 * 1000 + "")
 
     mc5.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc5, cache)
+    rule.attachMCLabel(Seq(mc5), cache)
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 10 * 60 * 1000 + "")
 
     mc6.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc6, cache)
+    rule.attachMCLabel(Seq(mc6), cache)
     assert(mc6.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc6.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 10 * 60 * 1000 + "")
 
     mc7.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc7, cache)
+    rule.attachMCLabel(Seq(mc7), cache)
     assert(mc7.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc7.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
 
 
     mc8.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc8, cache)
+    rule.attachMCLabel(Seq(mc8), cache)
     assert(mc8.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc8.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
 
@@ -735,19 +735,19 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
 
     areaLabelMap.put("area1", "true")
     mc1.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc1, cache)
+    rule.attachMCLabel(Seq(mc1), cache)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).size == 1)
     assert(mc1.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
 
     areaLabelMap.put("area2", "true")
     mc2.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc2, cache)
+    rule.attachMCLabel(Seq(mc2), cache)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).size == 2)
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 0 + "")
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 0 + "")
 
     mc3.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc3, cache)
+    rule.attachMCLabel(Seq(mc3), cache)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).size == 2)
     assert(mc3.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 5 * 60 * 1000 + "")
     assert(mc2.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 0 + "")
@@ -755,26 +755,26 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
     areaLabelMap.remove("area1")
     areaLabelMap.put("area3", "true")
     mc4.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc4, cache)
+    rule.attachMCLabel(Seq(mc4), cache)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).size == 2)
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 5 * 60 * 1000 + "")
     assert(mc4.getLabels(LabelConstant.LABEL_STAY).get("area3").get == 0 + "")
 
     mc5.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc5, cache)
+    rule.attachMCLabel(Seq(mc5), cache)
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).size == 2)
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 5 * 60 * 1000 + "")
     assert(mc5.getLabels(LabelConstant.LABEL_STAY).get("area3").get == 0 + "")
 
     mc6.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc6, cache)
+    rule.attachMCLabel(Seq(mc6), cache)
     assert(mc6.getLabels(LabelConstant.LABEL_STAY).size == 2)
     assert(mc6.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 10 * 60 * 1000 + "")
     assert(mc6.getLabels(LabelConstant.LABEL_STAY).get("area3").get == 5 * 60 * 1000 + "")
 
     areaLabelMap.put("area1", "true")
     mc7.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc7, cache)
+    rule.attachMCLabel(Seq(mc7), cache)
     assert(mc7.getLabels(LabelConstant.LABEL_STAY).size == 3)
     assert(mc7.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
     assert(mc7.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 10 * 60 * 1000 + "")
@@ -782,7 +782,7 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
 
 
     mc8.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc8, cache)
+    rule.attachMCLabel(Seq(mc8), cache)
     assert(mc8.getLabels(LabelConstant.LABEL_STAY).size == 3)
     assert(mc8.getLabels(LabelConstant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
     assert(mc8.getLabels(LabelConstant.LABEL_STAY).get("area2").get == 20 * 60 * 1000 + "")
@@ -791,7 +791,7 @@ class LocationStayRuleSuite extends FunSuite with BeforeAndAfter {
     assert(mc8.getLabels(LabelConstant.LABEL_STAY).get("area3").get == 0 + "")
 
     mc9.setLabel(LabelConstant.LABEL_ONSITE, areaLabelMap)
-    rule.attachMCLabel(mc9, cache)
+    rule.attachMCLabel(Seq(mc9), cache)
     assert(mc9.getLabels(LabelConstant.LABEL_STAY).size == 3)
     //TODO: 连续满足时长条件，确认是否继续打标签
     //		assert(mc9.getLabels(Constant.LABEL_STAY).get("area1").get == 20 * 60 * 1000 + "")
