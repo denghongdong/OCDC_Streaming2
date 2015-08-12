@@ -32,6 +32,8 @@ class MCEventSource() extends EventSource() {
 
         val callingimsi = inputs(6)
         val calledimsi = inputs(7)
+        val callingphone = inputs(8)
+        val calledphone = inputs(9)
 
         val eventresult = inputs(8).toInt
         val alertstatus = inputs(9).toInt
@@ -63,7 +65,7 @@ class MCEventSource() extends EventSource() {
         }
 
         Some(new MCSourceObject(eventID, time, lac, ci, callingimei, calledimei, callingimsi, calledimsi,
-          eventresult, alertstatus, assstatus, clearstatus, relstatus, xdrtype, issmsalone, imsi, imei))
+          callingphone , calledphone, eventresult, alertstatus, assstatus, clearstatus, relstatus, xdrtype, issmsalone, imsi, imei))
       }
     } catch {
       case e: Exception => {
