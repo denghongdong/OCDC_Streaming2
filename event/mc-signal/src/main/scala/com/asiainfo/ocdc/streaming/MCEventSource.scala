@@ -32,6 +32,7 @@ class MCEventSource() extends EventSource() {
 
         val callingimsi = inputs(6)
         val calledimsi = inputs(7)
+
         val callingphone = inputs(8)
         val calledphone = inputs(9)
         
