@@ -34,14 +34,14 @@ class MCEventSource() extends EventSource() {
         val calledimsi = inputs(7)
         val callingphone = inputs(8)
         val calledphone = inputs(9)
-
-        val eventresult = inputs(8).toInt
-        val alertstatus = inputs(9).toInt
-        val assstatus = inputs(10).toInt
-        val clearstatus = inputs(11).toInt
-        val relstatus = inputs(12).toInt
-        val xdrtype = inputs(13).toInt
-        val issmsalone = inputs(14).toInt
+        
+        val eventresult = inputs(10).toInt
+        val alertstatus = inputs(11).toInt
+        val assstatus = inputs(12).toInt
+        val clearstatus = inputs(13).toInt
+        val relstatus = inputs(14).toInt
+        val xdrtype = inputs(15).toInt
+        val issmsalone = inputs(16).toInt
 
         var imei = ""
         var imsi = ""
