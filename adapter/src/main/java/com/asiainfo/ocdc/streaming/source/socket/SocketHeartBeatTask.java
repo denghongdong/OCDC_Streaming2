@@ -37,7 +37,6 @@ public class SocketHeartBeatTask implements Callable<String> ,Thread.UncaughtExc
 	}
 	
 	@SuppressWarnings("static-access")
-	@Override
 	public String call() {
 		try{
 			logger.info("SocketHeartBeatTask starting ...");
@@ -151,7 +150,6 @@ public class SocketHeartBeatTask implements Callable<String> ,Thread.UncaughtExc
 		this.dataInputStream = dataInputStream;
 	}
 
-	@Override
 	public void uncaughtException(Thread t, Throwable e) {
 		e.printStackTrace();
 	}

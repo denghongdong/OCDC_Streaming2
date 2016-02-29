@@ -46,7 +46,6 @@ public class ProducerSendTask implements Callable<String> ,Thread.UncaughtExcept
 		return "";
 	}
 
-	@Override
 	public void uncaughtException(Thread t, Throwable e) {
 		e.printStackTrace();
 	}
