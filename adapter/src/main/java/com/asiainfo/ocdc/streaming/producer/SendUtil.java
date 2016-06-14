@@ -31,7 +31,6 @@ public class SendUtil {
 		eventList1.add("3");
 		eventList1.add("5");
 		eventList1.add("7");
-		
 		eventList2.add("8");
 		eventList2.add("9");
 		eventList2.add("10");
