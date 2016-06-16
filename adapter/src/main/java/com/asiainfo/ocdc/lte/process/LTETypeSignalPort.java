@@ -61,7 +61,7 @@ public class LTETypeSignalPort implements Runnable {
 		time_flg = Boolean.valueOf(prop.getProperty("socket.lte.append.time.flg"));
 	}
 
-	private ArrayList<KeyedMessage<String, String>> uumsgList = new ArrayList<KeyedMessage<String, String>>();
+//	private ArrayList<KeyedMessage<String, String>> uumsgList = new ArrayList<KeyedMessage<String, String>>();
 //	private ArrayList<KeyedMessage<String, String>> x2msgList = new ArrayList<KeyedMessage<String, String>>();
 	private ArrayList<KeyedMessage<String, String>> uE_MRmsgList = new ArrayList<KeyedMessage<String, String>>();
 	private ArrayList<KeyedMessage<String, String>> cell_MRmsgList = new ArrayList<KeyedMessage<String, String>>();
@@ -119,7 +119,7 @@ public class LTETypeSignalPort implements Runnable {
 		switch (signalType) {
 		 case 1:
 		 // Uu_flg
-		 uu_Analysis(buffer_lte,off,time_flg);
+//		 uu_Analysis(buffer_lte,off,time_flg);
 		 break;
 		 case 2:
 		 //X2_flg
@@ -161,126 +161,126 @@ public class LTETypeSignalPort implements Runnable {
 	 * @param totalContents
 	 * @param time_print_flg
 	 */
-	private void uu_Analysis(byte[] buffer, int off, boolean time_print_flg) {
-
-		StringBuilder sb = new StringBuilder();
-		sb.append(ConvToByte.byteToUnsignedShort(buffer, off) + itemSeparator);// Length
-		off += 2;
-		sb.append(ConvToByte.decodeTBCD(buffer, off, off + 2, true) + itemSeparator);// City
-		off += 2;
-		sb.append(buffer[off] + itemSeparator);// Interface
-		off += 1;
-		sb.append(ConvToByte.getHexString(buffer, off, off + 16) + itemSeparator);// XDR
-																		// ID
-		off += 16;
-		sb.append(ConvToByte.byteToUnsignedByte(buffer, off) + itemSeparator);// RAT
-		off += 1;
-		sb.append(ConvToByte.decodeTBCD(buffer, off, off + 8, true) + itemSeparator);// IMSI
-		off += 8;
-		sb.append(ConvToByte.decodeTBCD(buffer, off, off + 8, true) + itemSeparator);// IMEI
-		off += 8;
-		sb.append(ConvToByte.decodeTBCD(buffer, off, off + 16, false) + itemSeparator);// MSISDN
-		off += 16;
-		sb.append((buffer[off] & 0xff) + itemSeparator);// Procedure Type
-		off += 1;
-		sb.append(ConvToByte.byteToLong(buffer, off) + itemSeparator);// Procedure Start
-															// Time
-		off += 8;
-		sb.append(ConvToByte.byteToLong(buffer, off) + itemSeparator);// Procedure End
-															// Time
-		off += 8;
-		
-		sb.append((buffer[off] & 0xff) + itemSeparator);// Keyword 1
-		off += 1;
-		sb.append((buffer[off] & 0xff) + itemSeparator);// Keyword 2
-		off += 1;
-		sb.append((buffer[off] & 0xff) + itemSeparator);// Procedure Status
-		off += 1;
-		sb.append(ConvToByte.byteToUnsignedShort(buffer, off) + itemSeparator);// PLMN ID
-																		
-		off += 3;
-		sb.append(ConvToByte.byteToUnsignedShort(buffer, off) + itemSeparator);// eNB ID
-																		
-		off += 4;
-		sb.append(ConvToByte.byteToUnsignedInt(buffer, off) + itemSeparator);// Cell ID
-																	
-		off += 4;
-		sb.append(ConvToByte.byteToUnsignedShort(buffer, off) + itemSeparator);// C-RNTI
-		
-		off += 2;
-		
-		sb.append(ConvToByte.byteToUnsignedByte(buffer, off) + itemSeparator);// Target eNB ID
-		off += 4;
-		sb.append(ConvToByte.getHexString(buffer, off, off + 4) + itemSeparator);// Target Cell ID
-		off += 4;
-		sb.append(ConvToByte.byteToUnsignedShort(buffer, off) + itemSeparator);// Target C-RNTI
-		off += 2;
-		sb.append(ConvToByte.byteToUnsignedByte(buffer, off) + itemSeparator);// MME UE 
-		off += 4;
-																	// S1AP ID
-		sb.append(ConvToByte.getHexString(buffer, off, off + 4) + itemSeparator);// MME Group ID
-		off += 2;
-		sb.append(ConvToByte.getIpv4(buffer, off) + itemSeparator);// MME Code
-		off += 1;
-		sb.append(ConvToByte.getIpv6(buffer, off) + itemSeparator);// M-TMSI
-		off += 4;
-		sb.append(ConvToByte.getIp(buffer, off) + itemSeparator);// CSFB Indication
-		off += 1;
-		sb.append(ConvToByte.getIp(buffer, off) + itemSeparator);// Redirected Network
-		off += 1;
-
-		int epsBearerNum = ConvToByte.byteToUnsignedByte(buffer, off);
-		sb.append(epsBearerNum + itemSeparator);// EPS Bearer Number
-		off += 1;
-		for (int n = 0; n < epsBearerNum; n++) {
-			sb.append(ConvToByte.byteToUnsignedByte(buffer, off) + itemSeparator);// Bearer
-																		// 1 ID
-			off += 1;
-			sb.append(ConvToByte.byteToUnsignedByte(buffer, off) + itemSeparator);// Bearer
-																		// 1
-																		// Type
-			off += 1;
-			sb.append(ConvToByte.byteToUnsignedByte(buffer, off) + itemSeparator);// Bearer
-																		// 1 QCI
-			off += 1;
-			sb.append(ConvToByte.byteToUnsignedByte(buffer, off) + itemSeparator);// Bearer
-																		// 1
-																		// Status
-			off += 1;
-			sb.append(ConvToByte.byteToUnsignedShort(buffer, off) + itemSeparator);// Bearer
-																			// 1
-																			// Request
-																			// Cause
-			off += 2;
-			sb.append(ConvToByte.byteToUnsignedShort(buffer, off) + itemSeparator);// Bearer
-																			// 1
-																			// Failure
-																			// Cause
-			off += 2;
-			sb.append(ConvToByte.byteToUnsignedInt(buffer, off) + itemSeparator);// Bearer
-																		// 1 eNB
-																		// GTP-TEID
-			off += 4;
-			sb.append(ConvToByte.byteToUnsignedInt(buffer, off) + itemSeparator);// Bearer
-																		// 1 SGW
-																		// GTP-TEID
-			off += 4;
-		}
-		buffer = null;
-		if (time_flg) {
-			sb.append(sdf.format(System.currentTimeMillis()));
-		}else {
-			sb.deleteCharAt(sb.lastIndexOf("|"));
-		}
-		String message= sb.toString();
-		KeyedMessage<String, String> km = new KeyedMessage<String, String>(topicMap.get("1"),String.valueOf(message.hashCode()),message);
-		// 如果消息队列满足sendmsgNum条向kafka队列缓存队列存储
-		if (uumsgList.size() == uuSsendmsgNum) {
-			msg_queue.offer(uumsgList);
-			uumsgList = new ArrayList<KeyedMessage<String, String>>();
-		}
-		uumsgList.add(km);
-	}
+//	private void uu_Analysis(byte[] buffer, int off, boolean time_print_flg) {
+//
+//		StringBuilder sb = new StringBuilder();
+//		sb.append(ConvToByte.byteToUnsignedShort(buffer, off) + itemSeparator);// Length
+//		off += 2;
+//		sb.append(ConvToByte.decodeTBCD(buffer, off, off + 2, true) + itemSeparator);// City
+//		off += 2;
+//		sb.append(buffer[off] + itemSeparator);// Interface
+//		off += 1;
+//		sb.append(ConvToByte.getHexString(buffer, off, off + 16) + itemSeparator);// XDR
+//																		// ID
+//		off += 16;
+//		sb.append(ConvToByte.byteToUnsignedByte(buffer, off) + itemSeparator);// RAT
+//		off += 1;
+//		sb.append(ConvToByte.decodeTBCD(buffer, off, off + 8, true) + itemSeparator);// IMSI
+//		off += 8;
+//		sb.append(ConvToByte.decodeTBCD(buffer, off, off + 8, true) + itemSeparator);// IMEI
+//		off += 8;
+//		sb.append(ConvToByte.decodeTBCD(buffer, off, off + 16, false) + itemSeparator);// MSISDN
+//		off += 16;
+//		sb.append((buffer[off] & 0xff) + itemSeparator);// Procedure Type
+//		off += 1;
+//		sb.append(ConvToByte.byteToLong(buffer, off) + itemSeparator);// Procedure Start
+//															// Time
+//		off += 8;
+//		sb.append(ConvToByte.byteToLong(buffer, off) + itemSeparator);// Procedure End
+//															// Time
+//		off += 8;
+//		
+//		sb.append((buffer[off] & 0xff) + itemSeparator);// Keyword 1
+//		off += 1;
+//		sb.append((buffer[off] & 0xff) + itemSeparator);// Keyword 2
+//		off += 1;
+//		sb.append((buffer[off] & 0xff) + itemSeparator);// Procedure Status
+//		off += 1;
+//		sb.append(ConvToByte.byteToUnsignedShort(buffer, off) + itemSeparator);// PLMN ID
+//																		
+//		off += 3;
+//		sb.append(ConvToByte.byteToUnsignedShort(buffer, off) + itemSeparator);// eNB ID
+//																		
+//		off += 4;
+//		sb.append(ConvToByte.byteToUnsignedInt(buffer, off) + itemSeparator);// Cell ID
+//																	
+//		off += 4;
+//		sb.append(ConvToByte.byteToUnsignedShort(buffer, off) + itemSeparator);// C-RNTI
+//		
+//		off += 2;
+//		
+//		sb.append(ConvToByte.byteToUnsignedByte(buffer, off) + itemSeparator);// Target eNB ID
+//		off += 4;
+//		sb.append(ConvToByte.getHexString(buffer, off, off + 4) + itemSeparator);// Target Cell ID
+//		off += 4;
+//		sb.append(ConvToByte.byteToUnsignedShort(buffer, off) + itemSeparator);// Target C-RNTI
+//		off += 2;
+//		sb.append(ConvToByte.byteToUnsignedByte(buffer, off) + itemSeparator);// MME UE 
+//		off += 4;
+//																	// S1AP ID
+//		sb.append(ConvToByte.getHexString(buffer, off, off + 4) + itemSeparator);// MME Group ID
+//		off += 2;
+//		sb.append(ConvToByte.getIpv4(buffer, off) + itemSeparator);// MME Code
+//		off += 1;
+//		sb.append(ConvToByte.getIpv6(buffer, off) + itemSeparator);// M-TMSI
+//		off += 4;
+//		sb.append(ConvToByte.getIp(buffer, off) + itemSeparator);// CSFB Indication
+//		off += 1;
+//		sb.append(ConvToByte.getIp(buffer, off) + itemSeparator);// Redirected Network
+//		off += 1;
+//
+//		int epsBearerNum = ConvToByte.byteToUnsignedByte(buffer, off);
+//		sb.append(epsBearerNum + itemSeparator);// EPS Bearer Number
+//		off += 1;
+//		for (int n = 0; n < epsBearerNum; n++) {
+//			sb.append(ConvToByte.byteToUnsignedByte(buffer, off) + itemSeparator);// Bearer
+//																		// 1 ID
+//			off += 1;
+//			sb.append(ConvToByte.byteToUnsignedByte(buffer, off) + itemSeparator);// Bearer
+//																		// 1
+//																		// Type
+//			off += 1;
+//			sb.append(ConvToByte.byteToUnsignedByte(buffer, off) + itemSeparator);// Bearer
+//																		// 1 QCI
+//			off += 1;
+//			sb.append(ConvToByte.byteToUnsignedByte(buffer, off) + itemSeparator);// Bearer
+//																		// 1
+//																		// Status
+//			off += 1;
+//			sb.append(ConvToByte.byteToUnsignedShort(buffer, off) + itemSeparator);// Bearer
+//																			// 1
+//																			// Request
+//																			// Cause
+//			off += 2;
+//			sb.append(ConvToByte.byteToUnsignedShort(buffer, off) + itemSeparator);// Bearer
+//																			// 1
+//																			// Failure
+//																			// Cause
+//			off += 2;
+//			sb.append(ConvToByte.byteToUnsignedInt(buffer, off) + itemSeparator);// Bearer
+//																		// 1 eNB
+//																		// GTP-TEID
+//			off += 4;
+//			sb.append(ConvToByte.byteToUnsignedInt(buffer, off) + itemSeparator);// Bearer
+//																		// 1 SGW
+//																		// GTP-TEID
+//			off += 4;
+//		}
+//		buffer = null;
+//		if (time_flg) {
+//			sb.append(sdf.format(System.currentTimeMillis()));
+//		}else {
+//			sb.deleteCharAt(sb.lastIndexOf("|"));
+//		}
+//		String message= sb.toString();
+//		KeyedMessage<String, String> km = new KeyedMessage<String, String>(topicMap.get("1"),String.valueOf(message.hashCode()),message);
+//		// 如果消息队列满足sendmsgNum条向kafka队列缓存队列存储
+//		if (uumsgList.size() == uuSsendmsgNum) {
+//			msg_queue.offer(uumsgList);
+//			uumsgList = new ArrayList<KeyedMessage<String, String>>();
+//		}
+//		uumsgList.add(km);
+//	}
 	/**
 	 * ｘ２　解析 type =２
 	 * @param buffer_lte
@@ -676,7 +676,6 @@ public class LTETypeSignalPort implements Runnable {
 		}
 		s6amsgList.add(km);
 	}
-	
 	/**
 	 * S11　解析 type =7
 	 * @param buffer_lte

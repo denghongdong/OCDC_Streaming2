@@ -50,9 +50,9 @@ public class LTEworkNodeServer {
 			// 多线程接收socket 数据
 			int Recever_thread_num = Integer.parseInt(prop.getProperty("socket.lte.recever.thread.num").trim());
 			logger.info("Processdata 线程数："+Recever_thread_num);
-			for (int i = 0; i< Recever_thread_num;i++){
-				executorPool.execute(new WorkNodeReceveTask(lbkSocket,lbkAllMsg));
-			}
+//			for (int i = 0; i< Recever_thread_num;i++){
+//				executorPool.execute(new WorkNodeReceveTask(lbkSocket,lbkAllMsg));
+//			}
 			
 			// 多线程分类处理数据
 			int sort_type_num = Integer.parseInt(prop.getProperty("socket.lte.process.sort.type.num").trim());
@@ -79,6 +79,7 @@ public class LTEworkNodeServer {
 			while (true){
 				Socket socket = serverSocket.accept();
 				lbkSocket.offer(socket);
+				executorPool.execute(new WorkNodeReceveTask(lbkSocket,lbkAllMsg));
 				System.out.println("socket 链路id:"+ i++);
 			}
 		} catch (IOException e) {

@@ -81,9 +81,8 @@ public class LTEDespatcherServer {
 
 			// 启动serverSocket
 			int serverPort = Integer.parseInt(prop.getProperty("socket.lte.socketServer.port").trim());
-			LteCacheServer server = new LteCacheServer(lbkAllMsg, serverPort);
-			server.setPrintFlg(timer_flg);
-        	server.listen();
+			LteCacheServer server = new LteCacheServer(serverPort);
+        	server.listenAction(lbkAllMsg);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

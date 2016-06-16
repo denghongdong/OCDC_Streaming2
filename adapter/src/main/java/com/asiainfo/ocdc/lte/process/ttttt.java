@@ -17,7 +17,7 @@ public class ttttt {
 		
 		
 		
-		for (int i = 0;i<1; i++) {
+		for (int i = 0;i<3; i++) {
 			new Thread(new TestTask("thread"+i)).start();
 		}
 		
@@ -31,7 +31,6 @@ class TestTask implements Runnable {
 		this.name = name;
 	}
 
-	@SuppressWarnings("static-access")
 	public void run() {
 		Socket client = null;
 		DataOutputStream out = null;
@@ -43,14 +42,13 @@ class TestTask implements Runnable {
 
 			while (true) {
 				
-				for (int i = 0; i < 1; i++) {
+				for (int i = 0; i < 2; i++) {
 					String wd = name+"write:"+i+"|";
 					out.write(wd.getBytes());
 					out.flush();
 				}
 				
-			Thread.currentThread().sleep(5000);
-			byte [] aa = new byte[8];
+			byte [] aa = new byte[9];
 			is.read(aa);
 			System.out.println(new String(aa));
 			}
